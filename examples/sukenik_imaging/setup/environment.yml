@@ -1,0 +1,34 @@
+# conda env create -f environment.yml   (then: python prefetch.py)
+# Versions match the lab machine where both pipelines were validated
+# (python 3.13, pyimagej 1.7.0, OpenJDK 11, Cellpose 4.0.4 / CPSAM, torch 2.7.1).
+name: fucci_grid
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - pyimagej=1.7.0
+  # pinned to the lab machine's versions: jgo 3.x (what conda picks unpinned)
+  # resolves Fiji with its own downloader, which cannot find
+  # woolz:JWlz:1.4.0, and fetches its own JRE instead of using openjdk below
+  - jgo=1.0.6
+  - scyjava=1.12.0
+  - jpype1=1.5.2
+  - imglyb=2.1.0
+  - openjdk=11
+  - maven=3.9
+  - numpy=2.2
+  - pandas=2.2
+  - scipy=1.15
+  - pystackreg=0.2.8
+  - tifffile
+  - matplotlib-base=3.10
+  - xarray
+  - tqdm
+  - pip
+  - pip:
+      # CUDA 12.6 build of torch: runs on OrangeGrid GPUs with driver >= 12
+      - --extra-index-url https://download.pytorch.org/whl/cu126
+      - torch==2.7.1
+      - torchvision==0.22.1
+      - cellpose==4.0.4
+      - scikit-image==0.25.2

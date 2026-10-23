@@ -1,0 +1,17 @@
+# run files and results made by ogrun
+ogrun_runs/
+results/
+# python
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+# data that should never be committed
+*.vsi
+*.ets
+*.tif
+*.tiff
+*.npz
+*.npy
+.DS_Store
