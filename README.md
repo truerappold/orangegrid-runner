@@ -33,7 +33,7 @@ line what to read and where to write.
 `ogrun` itself is plain Python (3.8+, standard library only), so it runs on the
 login node with no setup beyond cloning this repository.
 
-Contents: [Install](#install) · [Quick start](#quick-start) ·
+Contents: [Install](#install) · [Quick test](#quick-test) ·
 [Writing the command](#writing-the-command) · [Grouping files into jobs](#grouping-files-into-jobs) ·
 [Resources and GPUs](#resources-and-gpus) · [Testing before a big run](#testing-before-a-big-run) ·
 [Watching, fixing, resubmitting](#watching-fixing-resubmitting) · [Collecting results](#collecting-results) ·
@@ -58,27 +58,30 @@ ogrun --version
 
 ---
 
-## Quick start
+## Quick test
 
-The repository has a toy analysis to try the whole cycle in two minutes:
-[`examples/hello_world`](examples/hello_world), which counts the words in each
-text file.
+> **This is only a test that the tool works on the grid; it is not a real
+> analysis.** [`examples/quick_test`](examples/quick_test) has three tiny text
+> files (a sentence or two each) and a 15-line script that counts their words.
+> No images, GPU or conda needed, so in two minutes you know the grid side
+> works before trying your own script. For a real pipeline, see
+> [`examples/sukenik_imaging`](examples/sukenik_imaging).
 
 ```bash
 cd ~/orangegrid-runner
-ogrun submit --name hello \
-    --inputs "examples/hello_world/data/*.txt" \
-    --output results/hello \
-    --command "python examples/hello_world/word_count.py {input} {output}"
-ogrun status ogrun_runs/hello            # until everything is "done"
-ogrun combine results/hello --pattern counts.csv --into results/hello_all.csv
+ogrun submit --name quick_test \
+    --inputs "examples/quick_test/data/*.txt" \
+    --output results/quick_test \
+    --command "python examples/quick_test/word_count.py {input} {output}"
+ogrun status ogrun_runs/quick_test            # until everything is "done"
+ogrun combine results/quick_test --pattern counts.csv --into results/quick_test_all.csv
 ```
 
 What happened:
 
 1. `submit` found 3 inputs and made 3 jobs, named after the files (`cells`, `fox`, `hamlet`).
-2. It wrote the run's files to `ogrun_runs/hello/` and submitted them.
-3. Each job ran `word_count.py` on its file, writing to `results/hello/<job>/`.
+2. It wrote the run's files to `ogrun_runs/quick_test/` and submitted them.
+3. Each job ran `word_count.py` on its file, writing to `results/quick_test/<job>/`.
 4. `combine` joined the three `counts.csv` files, adding an `ogrun_job` column.
 
 ---
@@ -307,8 +310,9 @@ for finished ones, and **researchcomputing@syr.edu**.
 
 ## Examples
 
-- [`examples/hello_world`](examples/hello_world): word counts. Three files, CPU,
-  two minutes. Start here.
+- [`examples/quick_test`](examples/quick_test): **not a real analysis**, just a
+  two-minute check that `ogrun` works on the grid (counts the words in three
+  tiny text files; CPU only). Run it once before your own data.
 - [`examples/sukenik_imaging`](examples/sukenik_imaging): three real
   microscopy pipelines used in the Sukenik lab. Each was validated by running the
   same images through the original script and comparing results; see that
