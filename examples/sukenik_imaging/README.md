@@ -10,10 +10,41 @@ and segment with Cellpose-SAM on the GPU.
 | **FRET snapshot** (before/after) | `grid/analyzeDirPerturbBGST_grid.py` | one well | byte-identical CSVs to the original `analysis/analyzeDirPerturbBGST.py` |
 | **FRET timelapse** | `grid/analyzeDirTimelapseBGST_grid.py` | one well/tile | byte-identical CSVs to the original `analysis/analyzeDirTimelapseBGST.py` |
 
-`analysis/` holds the lab's analysis code (all `test_*.py` files run without a
-GPU: `cd analysis && for t in test_*.py; do python $t; done`). `grid/` holds the
-optimized per-job versions of the two FRET scripts, and their tests against the
-originals.
+## What each file is
+
+**`analysis/`: the lab's analysis code**
+
+| file | what it does | used by |
+|---|---|---|
+| `analyzeDirFUCCI.py` | the FUCCI analysis of one well/tile: what each grid job runs | FUCCI |
+| `fucci_pipeline.py` | FUCCI measurements, phase calls (`PHASE_THRESHOLDS`, `BACKGROUND`), motion columns | FUCCI |
+| `fucci_imaging.py` | reading `.vsi` files, drift correction, Cellpose | FUCCI |
+| `fucci_dual.py` | combining the brightfield and fluorescence masks; carrying nuclei into dim frames | FUCCI |
+| `timelapse_tracking.py` | following cells frame to frame, divisions, lineages | FUCCI, FRET timelapse |
+| `timelapse_imaging.py` | reading, registering and measuring the FRET timelapse | FRET timelapse |
+| `diagnose_tracks.py` | plots of one lineage's path, outlines over time, MSD, cutoff histograms | FUCCI, after the run |
+| `reclassify_fucci.py` | re-call cell-cycle phases from a finished CSV with new thresholds | FUCCI, after the run |
+| `prune_divisions.py` | undo false divisions in a finished CSV | FUCCI, after the run |
+| `analyzeDirPerturbBGST.py` | the **original** FRET snapshot script, kept as the reference the grid version is tested against | tests |
+| `analyzeDirTimelapseBGST.py` | the **original** FRET timelapse script, likewise | tests |
+| `test_*.py` | tests for the files above; run without a GPU: `cd analysis && for t in test_*.py; do python $t; done` | |
+
+**`grid/`: per-job versions for OrangeGrid**
+
+| file | what it does |
+|---|---|
+| `analyzeDirPerturbBGST_grid.py` | FRET snapshot for one well, same output as the original, faster |
+| `analyzeDirTimelapseBGST_grid.py` | FRET timelapse for one well/tile, same output as the original |
+| `fast_timelapse.py` | the faster per-cell steps the timelapse grid version uses |
+| `combine_timelapse.py` | joins per-tile timelapse results into the original's output files |
+| `test_fret_grid.py`, `test_timelapse_grid.py` | check the grid versions against the originals |
+
+**`setup/`**: `environment.yml` (the conda environment) and `prefetch.py`
+(one-time download of Fiji and the Cellpose model).
+
+Some comments in the original scripts mention other lab tools (for example
+`tune_y.py` and `maskPrint_timelapse.py`). Those are plotting and tuning
+helpers that aren't needed to run the pipelines, so they aren't included here.
 
 ## Data layout
 
