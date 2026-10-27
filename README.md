@@ -64,8 +64,8 @@ ogrun --version
 > analysis.** [`examples/quick_test`](examples/quick_test) has three tiny text
 > files (a sentence or two each) and a 15-line script that counts their words.
 > No images, GPU or conda needed, so in two minutes you know the grid side
-> works before trying your own script. For a real pipeline, see
-> [`examples/sukenik_imaging`](examples/sukenik_imaging).
+> works before trying your own script. For a real imaging analysis you can run
+> on downloadable data, see [`examples/fret_snapshot`](examples/fret_snapshot).
 
 ```bash
 cd ~/orangegrid-runner
@@ -313,6 +313,12 @@ for finished ones, and **researchcomputing@syr.edu**.
 - [`examples/quick_test`](examples/quick_test): **not a real analysis**, just a
   two-minute check that `ogrun` works on the grid (counts the words in three
   tiny text files; CPU only). Run it once before your own data.
+- [`examples/fret_snapshot`](examples/fret_snapshot): **a real imaging analysis
+  you can run in about 10 minutes**, after a one-time setup. It downloads four tiles of microscopy data
+  (~200 MB), runs the lab's FRET analysis on them as two GPU jobs, and checks the
+  result against the original script's output. It comes with
+  [a step-by-step guide](examples/fret_snapshot/MAKING_A_SCRIPT_GRID_READY.md)
+  to how that script was changed to run on the grid, which applies to your own scripts too.
 - [`examples/sukenik_imaging`](examples/sukenik_imaging): three real
   microscopy pipelines used in the Sukenik lab. Each was validated by running the
   same images through the original script and comparing results; see that

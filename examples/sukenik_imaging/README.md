@@ -10,6 +10,10 @@ and segment with Cellpose-SAM on the GPU.
 | **FRET snapshot** (before/after) | `grid/analyzeDirPerturbBGST_grid.py` | one well | byte-identical CSVs to the original `analysis/analyzeDirPerturbBGST.py` |
 | **FRET timelapse** | `grid/analyzeDirTimelapseBGST_grid.py` | one well/tile | byte-identical CSVs to the original `analysis/analyzeDirTimelapseBGST.py` |
 
+To try the FRET snapshot pipeline on four example tiles before using your own
+data, see [`../fret_snapshot`](../fret_snapshot). It also explains how the
+original scripts were turned into the grid versions.
+
 ## What each file is
 
 **`analysis/`: the lab's analysis code**

@@ -15,3 +15,5 @@ dist/
 *.npz
 *.npy
 .DS_Store
+# example data, downloaded by examples/fret_snapshot/get_data.sh
+examples/fret_snapshot/data/

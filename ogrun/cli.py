@@ -260,7 +260,7 @@ def cmd_run_local(a):
         raise SystemExit(f'no job named {a.job!r} in {run_dir}')
     j = pick[0]
     print(f'running job {j.index} ({j.name}) on this machine -- on a login node '
-          f'keep this to short tests (Good Neighbor Policy)')
+          f'keep this to short tests (Good Neighbor Policy)', flush=True)
     env = dict(os.environ)
     for k, v in (cfg.get('env') or {}).items():
         env[k] = v
